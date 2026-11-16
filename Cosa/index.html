@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aluminio y Accesorios - Nota de Pedido</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="encabezado-negocio no-print">
+        <div class="info-marca-header">
+            <img src="img/logo.jpg" alt="Logo Aluminio y Accesorios" class="logo-header" onerror="this.style.display='none'">
+            <div>
+                <h1>Aluminio y Accesorios</h1>
+                <p>Juncal Este 45, Villa Carlos Paz &bull; Tel: 3541 224616 / 3541 666040</p>
+            </div>
+        </div>
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="cambiarPestana('catalogo', this)">1. Catálogo de Perfiles</button>
+            <button class="tab-btn" onclick="cambiarPestana('presupuesto', this)">
+                2. Nota de Pedido (<span id="contador-items">0</span>)
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PESTAÑA 1: CATÁLOGO -->
+        <section id="catalogo" class="tab-content active no-print">
+            <div class="controles-catalogo">
+                <input type="text" id="buscador" placeholder="Buscar por código o descripción..." onkeyup="filtrarProductos()">
+                
+                <select id="filtro-linea" onchange="filtrarProductos()">
+                    <option value="TODAS">Todas las líneas</option>
+                    <option value="General">Catálogo General (Herrero)</option>
+                    <option value="Modena">Línea Modena</option>
+                    <option value="A30">Línea A30</option>
+                </select>
+
+                <select id="selector-color" onchange="renderizarCatalogoActual()">
+                    <option value="Blanco">Color: Blanco</option>
+                    <option value="Bronce">Color: Bronce</option>
+                    <option value="Negro">Color: Negro</option>
+                    <option value="Gris">Color: Gris</option>
+                </select>
+            </div>
+
+            <div id="aviso-color" class="aviso-info"></div>
+
+            <div class="tabla-responsive">
+                <table id="tabla-catalogo">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Línea / Peso Ref.</th>
+                            <th>Precio/kg</th>
+                            <th>Cant. / Metros</th>
+                            <th>Kilos Est.</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-productos">
+                        <!-- Cargado desde script.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PESTAÑA 2: NOTA DE PEDIDO / PRESUPUESTO -->
+        <section id="presupuesto" class="tab-content">
+            <!-- Membrete único para impresión / PDF -->
+            <div class="membrete-impresion">
+                <img src="img/logo.jpg" alt="Logo Aluminio y Accesorios" class="logo-impresion" onerror="this.style.display='none'">
+                <div class="membrete-datos">
+                    <h2>Aluminio y Accesorios</h2>
+                    <p>Juncal Este 45, Villa Carlos Paz</p>
+                    <p>Tel: 3541 224616 / 3541 666040</p>
+                </div>
+            </div>
+
+            <div class="datos-cliente">
+                <h3>Nota de Pedido / Presupuesto</h3>
+                <div class="inputs-cliente">
+                    <input type="text" id="cliente-nombre" placeholder="Nombre del Cliente / Obra">
+                    <input type="date" id="fecha-presupuesto">
+                </div>
+                <input type="text" id="observaciones-pedido" placeholder="Observaciones (ej. cortes, entrega, forma de pago)">
+            </div>
+
+            <div class="tabla-responsive">
+                <table id="tabla-presupuesto">
+                    <thead>
+                        <tr>
+                            <th class="no-print">Foto</th>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Línea / Color</th>
+                            <th>Precio/kg</th>
+                            <th>Cant. / Metros</th>
+                            <th>Kilos</th>
+                            <th>Subtotal</th>
+                            <th class="no-print">Quitar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-pedido">
+                        <!-- Items seleccionados -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="resumen-totales">
+                <div class="fila-peso-final">
+                    <label for="peso-final-input">
+                        Peso Total (kg) <small class="no-print">(Estimado: <span id="peso-estimado-ref">0.00</span> kg)</small>:
+                    </label>
+                    <div class="control-peso-final">
+                        <input type="number" id="peso-final-input" value="0.00" step="0.01" min="0" oninput="marcarPesoManual()">
+                        <span class="unidad-kg">kg</span>
+                        <button type="button" class="btn-restaurar-peso no-print" onclick="restaurarPesoEstimado()" title="Volver al peso estimado">↺</button>
+                    </div>
+                </div>
+                <p class="total-plata">TOTAL PRESUPUESTO: $<strong id="total-precio">0.00</strong></p>
+            </div>
+
+            <div class="acciones-presupuesto no-print">
+                <button class="btn-limpiar" onclick="vaciarPresupuesto()">Vaciar Nota</button>
+                <button class="btn-imprimir" onclick="window.print()">Imprimir / Guardar PDF</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Visor ampliado de imagen -->
+    <div id="visor-imagen" class="modal-imagen no-print" onclick="cerrarVisor()">
+        <div class="modal-contenido" onclick="event.stopPropagation()">
+            <button class="btn-cerrar-modal" onclick="cerrarVisor()">✕</button>
+            <img id="visor-img-tag" src="" alt="Vista previa del perfil">
+            <p id="visor-titulo"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
