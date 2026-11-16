@@ -1,0 +1,470 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --negro-carbon: #16181a;
+    --plateado-oscuro: #4b5563;
+    --rojo-acento: #c81e1e;
+    --rojo-hover: #991b1b;
+    --fondo: #eef0f2;
+    --texto: #1e293b;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    padding: 20px;
+}
+
+.encabezado-negocio,
+main {
+    max-width: 1150px;
+    margin: 0 auto 20px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.encabezado-negocio {
+    border-top: 5px solid var(--rojo-acento);
+}
+
+.info-marca-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.logo-header {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--negro-carbon);
+}
+
+.info-marca-header h1 {
+    color: var(--negro-carbon);
+    font-size: 26px;
+    margin-bottom: 2px;
+}
+
+.info-marca-header p {
+    color: var(--plateado-oscuro);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    padding: 10px 18px;
+    border: none;
+    background: #e5e7eb;
+    color: var(--negro-carbon);
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--negro-carbon);
+    color: #ffffff;
+    border-bottom: 3px solid var(--rojo-acento);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.controles-catalogo {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.controles-catalogo input,
+.controles-catalogo select,
+.inputs-cliente input,
+#observaciones-pedido {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.aviso-info {
+    font-size: 13px;
+    color: var(--negro-carbon);
+    background: #f3f4f6;
+    border-left: 4px solid var(--rojo-acento);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.inputs-cliente {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+#observaciones-pedido {
+    margin-bottom: 16px;
+}
+
+/* Membrete para impresión (oculto en pantalla porque ya está arriba) */
+.membrete-impresion {
+    display: none;
+}
+
+.tabla-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: var(--negro-carbon);
+    color: #ffffff;
+}
+
+td input[type="number"] {
+    width: 85px;
+    padding: 6px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+}
+
+/* Miniaturas e imágenes de catálogo */
+.thumb-producto {
+    width: 54px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    cursor: pointer;
+    display: block;
+    transition: transform 0.15s ease;
+}
+
+.thumb-producto:hover {
+    transform: scale(1.06);
+    border-color: var(--rojo-acento);
+}
+
+.sin-foto {
+    width: 54px;
+    height: 54px;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4px;
+}
+
+/* Modal visor de imagen */
+.modal-imagen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(22, 24, 26, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-imagen.abierto {
+    display: flex;
+}
+
+.modal-contenido {
+    position: relative;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 10px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    border-top: 4px solid var(--rojo-acento);
+}
+
+.modal-contenido img {
+    max-width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.modal-contenido p {
+    font-weight: 600;
+    color: var(--negro-carbon);
+}
+
+.btn-cerrar-modal {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: #e5e7eb;
+    color: var(--negro-carbon);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.badge-linea {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #e5e7eb;
+    color: var(--negro-carbon);
+}
+
+.btn-agregar {
+    background: var(--rojo-acento);
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-agregar:hover {
+    background: var(--rojo-hover);
+}
+
+.btn-eliminar {
+    background: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Resumen y control de peso total editable */
+.resumen-totales {
+    text-align: right;
+    padding: 15px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    margin-bottom: 18px;
+}
+
+.fila-peso-final {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.control-peso-final {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.control-peso-final input {
+    width: 110px;
+    padding: 6px 8px;
+    border: 1px solid #94a3b8;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: right;
+    background: #ffffff;
+}
+
+.unidad-kg {
+    font-weight: bold;
+}
+
+.btn-restaurar-peso {
+    background: #e5e7eb;
+    border: 1px solid #cbd5e1;
+    color: var(--negro-carbon);
+    padding: 5px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-restaurar-peso:hover {
+    background: #d1d5db;
+}
+
+.resumen-totales .total-plata {
+    font-size: 22px;
+    color: var(--negro-carbon);
+}
+
+.acciones-presupuesto {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-limpiar {
+    background: #64748b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-imprimir {
+    background: var(--negro-carbon);
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .controles-catalogo,
+    .inputs-cliente {
+        grid-template-columns: 1fr;
+    }
+    .fila-peso-final {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+}
+
+/* Impresión / PDF en blanco y negro, sin encabezado duplicado y con logo */
+@media print {
+    body {
+        background: #ffffff;
+        color: #000000;
+        padding: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    main {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .membrete-impresion {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+    }
+
+    .logo-impresion {
+        width: 78px;
+        height: 78px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #000000;
+    }
+
+    .membrete-datos h2 {
+        font-size: 22px;
+        color: #000000;
+        margin-bottom: 3px;
+    }
+
+    .membrete-datos p {
+        font-size: 13px;
+        color: #000000;
+    }
+
+    .datos-cliente h3 {
+        color: #000000;
+        margin-bottom: 6px;
+    }
+
+    .inputs-cliente input,
+    #observaciones-pedido {
+        border: 1px solid #000000;
+        color: #000000;
+        background: #ffffff;
+    }
+
+    table th {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-top: 2px solid #000000;
+        border-bottom: 2px solid #000000;
+    }
+
+    table td {
+        border-bottom: 1px solid #000000;
+        color: #000000;
+    }
+
+    .resumen-totales {
+        background: #ffffff;
+        border: 1px solid #000000;
+    }
+
+    .control-peso-final input {
+        border: none;
+        background: transparent;
+        padding: 0;
+        width: auto;
+        color: #000000;
+    }
+
+    .resumen-totales .total-plata {
+        color: #000000;
+    }
+}
